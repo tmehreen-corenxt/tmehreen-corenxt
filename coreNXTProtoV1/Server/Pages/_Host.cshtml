@@ -1,0 +1,11 @@
+﻿@page "/_Host"
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@namespace coreNXTProtoV1.Pages
+@{
+        Layout="MainLayout";
+}
+<component typeof="typeof(App)" render-mode="ServerPrerendered" />    
+    <script src="_framework/blazor.server.js"></script>
+<persist-component-state />
+
+     <!-- Host.cshtml -->

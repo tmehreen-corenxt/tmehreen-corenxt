@@ -1,0 +1,78 @@
+﻿@page "/"
+@using coreNXTProtoV1.Shared
+@inject ICategoriesService cat    
+@inject PersistentComponentState ApplicationState
+
+<PageTitle> Home </PageTitle>
+
+<h1>Home</h1>
+<ErrorBoundary>
+    <ChildContent>
+@if (TopLevelMenuItems ==null)    
+{
+    <p><em>Loading...</em></p>
+}
+
+else{
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category Id</th>
+                <th>Parent Category Id</th>
+                <th>Locale Id</th>
+            </tr>
+        </thead>
+        <tbody>        
+            @foreach (var menuitem in TopLevelMenuItems)
+            {
+                <tr>
+                    <td>@menuitem.ItemName</td>
+                    <td>@menuitem.CategoryId </td>
+                    <td>@menuitem.ParentCategoryId </td>
+                    <td>@menuitem.LocaleId</td>
+                </tr>
+            }
+        </tbody>
+        
+    </table>
+    }
+    </ChildContent>
+    <ErrorContent>
+        <div class="text-danger">There was error retrieving data from database</div>
+    </ErrorContent>
+    </ErrorBoundary>
+
+@code {
+    
+    //public IEnumerable<TopLevelMenu> TopLevelMenuItems { get; set; } 
+
+    public IEnumerable<TopLevelMenu> TopLevelMenuItems { get; set; } = default!;
+    [Parameter]
+    public int localeid { get; set; } = 1;
+    [Parameter]
+    public int parentcategoryid { get; set; } = 1;
+    protected override async Task OnInitializedAsync()
+    {
+        TopLevelMenuItems = await cat.GetTopLevelMenu(localeid, parentcategoryid);
+    
+    }
+    //public CategoriesService cat= new CategoriesService();
+    //private List<TopLevelMenu> TopLevelMenu{ get; set; }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    TopLevelMenu = (await cat.GetTopLevelMenu(1, 1)).ToList();
+    //}
+
+    //    public List<TopLevelMenu> TopLevelMenu { get; set; }
+    //[Inject]
+    //public iCategoriesService CategoriesService;
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    TopLevelMenu = (await CategoriesService.GetTopLevelMenu(1, 1)).ToList();
+        //}
+
+}
+
+

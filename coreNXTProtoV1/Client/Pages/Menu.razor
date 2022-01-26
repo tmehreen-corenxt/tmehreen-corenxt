@@ -1,0 +1,54 @@
+﻿
+@page "/Menu"
+@using coreNXTProtoV1.Shared
+@*@inject HttpClient Http*@
+
+<PageTitle>Menu</PageTitle>
+
+<h1>Menu </h1>
+
+Welcome to your new app.
+@*
+@if (toplevel ==null)    
+{
+    <p><em>Loading...</em></p>
+}
+
+else{
+        <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category Id</th>
+                <th>Parent Category Id</th>
+                <th>Locale Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var menuitem in toplevel)
+            {
+                <tr>
+                    <td>@menuitem.Name</td>
+                    <td>@menuitem.CategoryId </td>
+                    <td>@menuitem.ParentCategoryId </td>
+                    <td>@menuitem.LocaleId</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    }
+    
+@code {
+    private TopLevelMenu[]? toplevel;
+
+    protected override async Task OnInitializedAsync()
+    {
+        toplevel = await Http.GetFromJsonAsync<TopLevelMenu[]>("TopLevelMenu");
+    }
+}
+
+
+
+
+*@
